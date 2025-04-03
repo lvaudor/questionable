@@ -6,13 +6,14 @@
 #' @examples
 #' # example code
 #' data(icecream)
-#' run_rf(icecream %>% select(-id),reponse="sorbet_citron")
+#' run_rf(icecream %>%
+#'           select(-id) %>%
+#'           mutate_all(optimize_for_rf),
+#'           reponse="sorbet_citron")
 run_rf=function(data,reponse=colnames(data)[1],plot=FALSE,clean_name=FALSE){
-  dat=data %>%
-    mutate_all(optimize_for_rf) %>%
-    na.omit()
-  datarf=dplyr::select(dat,-dplyr::one_of(reponse))
-  reponserf=dplyr::select(dat,dplyr::one_of(reponse)) %>% pull()
+  data=na.omit(data)
+  datarf=dplyr::select(data,-dplyr::one_of(reponse))
+  reponserf=dplyr::select(data,dplyr::one_of(reponse)) %>% pull()
   myrf=randomForest::randomForest(datarf,reponserf,ntree=1000)
   impDF=data.frame(variable=rownames(myrf$importance),
                    importance=myrf$importance[,1],

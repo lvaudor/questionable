@@ -17,5 +17,8 @@ Tests whether vector is free text or not
 \examples{
 # example code
 data(icecream)
-run_rf(icecream,reponse="sorbet_citron")
+run_rf(icecream \%>\%
+          select(-id) \%>\%
+          mutate_all(optimize_for_rf),
+          reponse="sorbet_citron")
 }
