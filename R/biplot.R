@@ -51,8 +51,16 @@ biplot=function(dataset,x,y){
   }
   # quanti vs quanti
   if(type=="quantiquanti"){
-    p=ggplot(dat,aes(x=x,y=y))+geom_point(alpha=0.5)+geom_smooth()
-  }
+    p=ggplot(dat,aes(x=x,y=y))+geom_point(alpha=0.5,color="red")+geom_smooth()
+    mean_number_of_individuals_by_location=dat %>%
+      group_by(x,y) %>%
+      summarise(n=n(),.groups="drop") %>%
+      pull(n) %>%
+      mean()
+    if(mean_number_of_individuals_by_location>5){
+     p=p+geom_jitter(alpha=0.5,position=position_jitter(width=0.1,height=0.1))
+    }
+    }
   p=p+xlab(x)
   p=p+ylab(y)
   return(p)
