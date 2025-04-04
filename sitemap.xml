@@ -1,12 +1,17 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://lvaudor.github.io/questionable/404.html</loc></url>
+<url><loc>https://lvaudor.github.io/questionable/articles/Intro.html</loc></url>
+<url><loc>https://lvaudor.github.io/questionable/articles/index.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/authors.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/index.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/biplot.html</loc></url>
+<url><loc>https://lvaudor.github.io/questionable/reference/clean_improper_NAs.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/hello.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/index.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/is_free_text.html</loc></url>
+<url><loc>https://lvaudor.github.io/questionable/reference/is_mainly_missing.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/optimize_for_rf.html</loc></url>
+<url><loc>https://lvaudor.github.io/questionable/reference/pipe.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/run_rf.html</loc></url>
 <url><loc>https://lvaudor.github.io/questionable/reference/test_pval.html</loc></url>
 </urlset>
