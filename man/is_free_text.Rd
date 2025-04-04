@@ -4,7 +4,7 @@
 \alias{is_free_text}
 \title{Tests whether vector is free text or not}
 \usage{
-is_free_text(x, max_distinct = 20)
+is_free_text(x, max_distinct = 10)
 }
 \arguments{
 \item{x}{the vector}

@@ -4,12 +4,18 @@
 \alias{optimize_for_rf}
 \title{Transforms a vector for ease of use in a random forest}
 \usage{
-optimize_for_rf(x, replace_NA_with = "Not provided")
+optimize_for_rf(
+  x,
+  replace_NA_with = "Not provided",
+  threshold_missing_proportion = 0.3333
+)
 }
 \arguments{
 \item{x}{the vector to optimize for running a random forest}
 
-\item{replace_NA_with}{the character string used to replace NA as category in categorical responses. Defaults to "Not provided"}
+\item{replace_NA_with}{the character string used to replace NA as category in categorical responses if not replaced by random values drawn from the observed distribution. Defaults to "Not provided"}
+
+\item{threshold_missing_proportion}{the proportion of NAs that can be replaced by random values drawn from the observed distribution. Defaults to 0.3333.}
 }
 \description{
 Transforms a vector for ease of use in a random forest
