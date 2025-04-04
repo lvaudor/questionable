@@ -26,7 +26,7 @@ run_rf=function(data,reponse=colnames(data)[1],plot=FALSE,clean_name=FALSE){
                       ggplot2::aes(x=variable, y=importance))+
       ggplot2::geom_point()+
       ggplot2::coord_flip()+
-      ggplot2::ggtitle(str_c("Prédiction de \n"))+
+      ggplot2::ggtitle(stringr::str_c("Prédiction de \n"))+
       xlab("Variables explicatives")+
       ggplot2::theme(plot.title=element_text(hjust=1))
     plot(p)

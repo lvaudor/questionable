@@ -45,7 +45,7 @@ test_pvalstar=function(x,y){
 
 pval_graph=function(data){
   vars=colnames(data)
-  names=str_match(vars,"([[:alpha:]]*)(\\d*)(.*)")
+  names=stringr::str_match(vars,"([[:alpha:]]*)(\\d*)(.*)")
   names=names[order(names[,2],as.numeric(names[,3]),names[,4]),]
   vars=names[,1]
 
