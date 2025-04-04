@@ -20,4 +20,5 @@ VignetteBuilder: knitr
 Imports: 
     dplyr,
     ggplot2,
-    magrittr
+    magrittr,
+    stringr
