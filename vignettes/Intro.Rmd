@@ -21,13 +21,15 @@ library(questionable)
 library(dplyr)
 ```
 
-# Introduction 
+# Objectives of the package 
 
 This package aims at making the analysis of questionnaires easier. It provides functions to
 
 - **clean and transform data** in order to make it useable for analysis (in particular, running random forests)
 - **run random forests** in order to **identify which variables are the most important for predicting a given outcome**
 - **test and visualize the link between two variables**
+
+These three aspects are dealt with in three different vignettes.
 
 The package comes with a built-in dataset (of purely fantasy origin) called `icecream` which helps examplify the functions and general purpose of the package. This hence questionable data contains the **results of a questionnaire about ice cream consumption**. The dataset is used in the examples below.
 
@@ -41,140 +43,3 @@ This dataset contains `nrow(icecream)` rows corresponding to the number of respo
 icecream %>% 
   dplyr::glimpse()
 ```
-
-## Detect free text columns
-
-We can try and clean the data prior to any use. For instance, we can detect columns which likely correspond to **free text**, which will be set aside for running a random forest. This is done using the `is_free_text()` function. This function returns a logical vector indicating whether each column is likely to be free text or not according to the number of distinct values encountered.
-
-```{r}
-is_free_text(icecream$comment,max_distinct=10)
-```
-We can apply this to check **all columns** of the dataset:
-
-```{r}
-icecream %>% 
-  summarise_all(is_free_text, max_distinct=10) %>%
-  t()
-```
-## Deal with improper NAs
-
-The raw dataset contains missing values which are incorrectly incoded as character strings (here, "Non renseigné").
-We apply the function clean_improper_NAs() to replace these strings with the proper NA value. See below an example on column `creme_glacee_caramel`
-
-```{r}
-# Before correction
-icecream %>%
-  group_by(creme_glacee_caramel) %>%
-  tally()
-# After correction
-icecream %>%
-  mutate(creme_glacee_caramel=clean_improper_NAs(creme_glacee_caramel,possible_strings="Non renseigné")) %>%
-  group_by(creme_glacee_caramel) %>% 
-  tally()
-```
-
-Now, we apply this function to all columns :
-
-```{r}
-icecream_cleaned <- icecream %>%
-  mutate(across(everything(), ~clean_improper_NAs(.x, possible_strings="Non renseigné")))
-```
-
-# Optimize variables for random forests
-
-## Deal with missing values
-
-Now, what should we do with all this missing information? Running random forests require to have **fully populated datasets**. We can either 
-
-- **remove the rows with missing values** (hence losing individuals) or 
-- **remove the columns with many missing values** (hence losing variables) or 
-- **optimize the dataset for use in a random forest model by populating the missing values**. 
-
-The function `optimize_for_rf()` allows to impute missing values for a variable `x` by using the observed distribution of `x` (i.e. the distribution of all non-missing values in `x`).
-
-For instance:
-
-```{r}
-# Unoptimized: level frequencies
-icecream_cleaned %>% 
-  group_by(genre) %>% 
-  tally()
-
-# Optimized for rf: level frequencies
-icecream_cleaned %>% 
-  mutate(genre=optimize_for_rf(genre)) %>% 
-  group_by(genre) %>% 
-  tally()
-```
-
-
-
-## Ordinal variables as numeric variables 
-
-This function also allows the optimization of variables for random forest by detecting ordinal categorical variables (provided they are formatted in a way which informs the order of categories, e.g. "0 : not at all", "1: a bit",... "5: completely") and transforming them into numeric variables. 
-
-```{r}
-# Unoptimized for rf: level frequencies
-icecream_cleaned %>% 
-  group_by(creme_glacee_vanille) %>% 
-  tally()
-# Optimized for rf: level frequencies
-icecream_cleaned %>% 
-  mutate(creme_glacee_vanille=optimize_for_rf(creme_glacee_vanille)) %>% 
-  group_by(creme_glacee_vanille) %>%
-  tally()
-```
-
-## Variables with many missing values
-
-In some cases, it might seem a bit questionable to replace all missing values based on observed distribution. This is particularly so **when the proportion of missing values in the variable is particularly high** (the threshold for being "high" is of course quite subjective and depends on the context of the analysis).
-
-The function `optimize_for_rf()` allows to set a **threshold for the proportion of missing values** in a variable **above which the missing values will not be replaced by a random value but rather by a character string making the absence of value a category in itself**. This threshold is set to 0.3333 by default, but can be changed using the `max_missing` argument. 
-
-In our dataset, here are the variables which contain more than 33% of missing values:
-
-```{r}
-icecream_cleaned %>% 
-  summarise_all(is_mainly_missing) %>% 
-  t()
-```
-There are many missing values (`r round(100*length(which(is.na(icecream_cleaned$regular_eating)))/nrow(icecream))`%) in the variable `regular_eating`, as many people did not answer the question "Do you eat ice cream regularly?". Maybe the term "regularly" should have been defined, and thus people not answering is a sign that they are unsure about the answer, possibly meaning that they actually eat ice cream with a frequency somewhat in the middle of "not regular" and "regular". In that regard, we could then consider that the missing value is in fact an answer, and we could replace the missing values with a character string "Unsure" (or any other string of your choice). 
-
-```{r}
-icecream_cleaned %>% 
-  group_by(regular_eating) %>% 
-  tally()
-
-icecream_cleaned %>% 
-  mutate(regular_eating=optimize_for_rf(regular_eating,replace_NA_with="Pas sûr(e)")) %>% 
-  group_by(regular_eating) %>% 
-  tally()
-```
-
-Another variable has many missing answers: `creme_glacee_caramel`. This variable is a bit different from the previous one, as it is not a question corresponding to a categorical answer but to a **pseudo-numeric (ordinal) one**. 
-
-```{r}
-icecream_cleaned %>% 
-  group_by(creme_glacee_caramel) %>% 
-  tally()
-```
-So, there are actually `r round(100*length(which(is.na(icecream_cleaned$creme_glacee_caramel)))/nrow(icecream))`% of missing values in this variable. Why would that be? Maybe most people have never tasted caramel ice cream and could not provide an answer to the question whether they liked it or not. In that case, it could also be argued that a missing answer is in fact a informational answer... But if included in a random forest model `creme_glacee_caramel` would be treated as a numeric (ordinal) variable: so technically we cannot replace missing answers with a given value as if they were a valid answer. The safest course of action is to **remove this variable from the dataset** before running a random forest model. 
-
-# Put everything together: prepare data for running a random forest model
-
-To summarise, here is the workflow we would apply to prepare the dataset prior to running a random forest model on it:
-
-```{r}
-icecream_cleaned <- icecream %>%
-  #identifier is not relevant for the analysis and would be taken into account as numeric predictor
-  select(-id) %>% 
-  # comment identified with is_free_text()
-  select(-comment) %>%
-  # replace "Non renseigné" values with proper NAs
-  mutate_all(~clean_improper_NAs(.x, possible_strings="Non renseigné")) %>% 
-  #creme_glacee_caramel as containing too many not fillable NAs  %>% 
-  select(-creme_glacee_caramel) %>%
-  #optimize all remaining variables for random forest
-  mutate_all(~optimize_for_rf(.x, threshold_missing_proportion=0.3333))
-```
-

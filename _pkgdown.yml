@@ -1,4 +1,12 @@
 url: https://lvaudor.github.io/questionable/
 template:
   bootstrap: 5
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+    - Intro
+    - Cleaning_and_formatting
+    - Running_random_forests
+    - Exploring_the_link_between_two_variables
 

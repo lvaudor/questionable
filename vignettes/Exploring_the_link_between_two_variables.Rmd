@@ -1,0 +1,19 @@
+---
+title: "Exploring_the_link_between_two_variables"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Exploring_the_link_between_two_variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(questionable)
+```
