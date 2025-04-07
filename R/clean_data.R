@@ -30,7 +30,7 @@ clean_improper_NAs=function(x, possible_strings=c("N/A",
   #if an improper NA has made the column falsely recognized as character, convert it to numeric
   if(class(x)!="numeric"){
     # Does this vector contain only number characters?
-    contains_only_numbers=any(!stringr::str_detect(x,"[^\\d.]*"),na.rm=TRUE)
+    contains_only_numbers=all(stringr::str_detect(x,"^[\\d\\.]*$"),na.rm=TRUE)
     if(contains_only_numbers){return(as.numeric(x))}else{return(x)}
   }
   return(x)
