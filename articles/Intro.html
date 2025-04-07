@@ -34,6 +34,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/Intro.html">Intro</a></li>
+    <li><a class="dropdown-item" href="../articles/Cleaning_and_formatting.html">Cleaning and formatting</a></li>
+    <li><a class="dropdown-item" href="../articles/Running_random_forests.html">Running random forests</a></li>
+    <li><a class="dropdown-item" href="../articles/Exploring_the_link_between_two_variables.html">Exploring_the_link_between_two_variables</a></li>
   </ul>
 </li>
       </ul>
@@ -67,7 +70,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lvaudor.github.io/questionable/">questionable</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<h2 id="objectives-of-the-package">Objectives of the package<a class="anchor" aria-label="anchor" href="#objectives-of-the-package"></a>
 </h2>
 <p>This package aims at making the analysis of questionnaires easier. It
 provides functions to</p>
@@ -83,6 +86,7 @@ outcome</strong>
 <li><strong>test and visualize the link between two
 variables</strong></li>
 </ul>
+<p>These three aspects are dealt with in three different vignettes.</p>
 <p>The package comes with a built-in dataset (of purely fantasy origin)
 called <code>icecream</code> which helps examplify the functions and
 general purpose of the package. This hence questionable data contains
@@ -113,283 +117,8 @@ below:</p>
 <span><span class="co">#&gt; $ creme_glacee_rhumraisins <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "4_énormément"<span style="color: #949494;">, </span>"0_pas_du_tout"<span style="color: #949494;">, </span>"0_pas_du_to…</span></span>
 <span><span class="co">#&gt; $ creme_glacee_caramel     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "Non renseigné"<span style="color: #949494;">, </span>"Non renseigné"<span style="color: #949494;">, </span>"4_énorméme…</span></span>
 <span><span class="co">#&gt; $ comment                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span><span style="color: #BB0000;">NA</span><span style="color: #949494;">, </span>"Pouet po…</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="detect-free-text-columns">Detect free text columns<a class="anchor" aria-label="anchor" href="#detect-free-text-columns"></a>
-</h3>
-<p>We can try and clean the data prior to any use. For instance, we can
-detect columns which likely correspond to <strong>free text</strong>,
-which will be set aside for running a random forest. This is done using
-the <code><a href="../reference/is_free_text.html">is_free_text()</a></code> function. This function returns a
-logical vector indicating whether each column is likely to be free text
-or not according to the number of distinct values encountered.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/is_free_text.html">is_free_text</a></span><span class="op">(</span><span class="va">icecream</span><span class="op">$</span><span class="va">comment</span>,max_distinct<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-<p>We can apply this to check <strong>all columns</strong> of the
-dataset:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html" class="external-link">summarise_all</a></span><span class="op">(</span><span class="va">is_free_text</span>, max_distinct<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                           [,1]</span></span>
-<span><span class="co">#&gt; id                       FALSE</span></span>
-<span><span class="co">#&gt; age                      FALSE</span></span>
-<span><span class="co">#&gt; regular_eating           FALSE</span></span>
-<span><span class="co">#&gt; genre                    FALSE</span></span>
-<span><span class="co">#&gt; taille                   FALSE</span></span>
-<span><span class="co">#&gt; sorbet_fraise            FALSE</span></span>
-<span><span class="co">#&gt; sorbet_framboise         FALSE</span></span>
-<span><span class="co">#&gt; sorbet_passion           FALSE</span></span>
-<span><span class="co">#&gt; sorbet_citron            FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_vanille     FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_chocolat    FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_rhumraisins FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_caramel     FALSE</span></span>
-<span><span class="co">#&gt; comment                   TRUE</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="deal-with-improper-nas">Deal with improper NAs<a class="anchor" aria-label="anchor" href="#deal-with-improper-nas"></a>
-</h3>
-<p>The raw dataset contains missing values which are incorrectly incoded
-as character strings (here, “Non renseigné”). We apply the function
-clean_improper_NAs() to replace these strings with the proper NA value.
-See below an example on column <code>creme_glacee_caramel</code></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Before correction</span></span>
-<span><span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">creme_glacee_caramel</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
-<span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           12</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement            9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Non renseigné           91</span></span>
-<span><span class="co"># After correction</span></span>
-<span><span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>creme_glacee_caramel<span class="op">=</span><span class="fu"><a href="../reference/clean_improper_NAs.html">clean_improper_NAs</a></span><span class="op">(</span><span class="va">creme_glacee_caramel</span>,possible_strings<span class="op">=</span><span class="st">"Non renseigné"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">creme_glacee_caramel</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
-<span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           12</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement            9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      91</span></span></code></pre></div>
-<p>Now, we apply this function to all columns :</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op">&lt;-</span> <span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">~</span><span class="fu"><a href="../reference/clean_improper_NAs.html">clean_improper_NAs</a></span><span class="op">(</span><span class="va">.x</span>, possible_strings<span class="op">=</span><span class="st">"Non renseigné"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="optimize-variables-for-random-forests">Optimize variables for random forests<a class="anchor" aria-label="anchor" href="#optimize-variables-for-random-forests"></a>
-</h2>
-<div class="section level3">
-<h3 id="deal-with-missing-values">Deal with missing values<a class="anchor" aria-label="anchor" href="#deal-with-missing-values"></a>
-</h3>
-<p>Now, what should we do with all this missing information? Running
-random forests require to have <strong>fully populated
-datasets</strong>. We can either</p>
-<ul>
-<li>
-<strong>remove the rows with missing values</strong> (hence losing
-individuals) or</li>
-<li>
-<strong>remove the columns with many missing values</strong> (hence
-losing variables) or</li>
-<li>
-<strong>optimize the dataset for use in a random forest model by
-populating the missing values</strong>.</li>
-</ul>
-<p>The function <code><a href="../reference/optimize_for_rf.html">optimize_for_rf()</a></code> allows to impute missing
-values for a variable <code>x</code> by using the observed distribution
-of <code>x</code> (i.e. the distribution of all non-missing values in
-<code>x</code>).</p>
-<p>For instance:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Unoptimized: level frequencies</span></span>
-<span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">genre</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
-<span><span class="co">#&gt;   genre           n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme          71</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme          54</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="color: #BB0000;">NA</span>             15</span></span>
-<span></span>
-<span><span class="co"># Optimized for rf: level frequencies</span></span>
-<span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>genre<span class="op">=</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">genre</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">genre</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
-<span><span class="co">#&gt;   genre           n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme          78</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme          60</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    12</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="ordinal-variables-as-numeric-variables">Ordinal variables as numeric variables<a class="anchor" aria-label="anchor" href="#ordinal-variables-as-numeric-variables"></a>
-</h3>
-<p>This function also allows the optimization of variables for random
-forest by detecting ordinal categorical variables (provided they are
-formatted in a way which informs the order of categories, e.g. “0 : not
-at all”, “1: a bit”,… “5: completely”) and transforming them into
-numeric variables.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Unoptimized for rf: level frequencies</span></span>
-<span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">creme_glacee_vanille</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
-<span><span class="co">#&gt;   creme_glacee_vanille     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           27</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement           27</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup              19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            28</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      30</span></span>
-<span><span class="co"># Optimized for rf: level frequencies</span></span>
-<span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>creme_glacee_vanille<span class="op">=</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">creme_glacee_vanille</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">creme_glacee_vanille</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
-<span><span class="co">#&gt;   creme_glacee_vanille     n</span></span>
-<span><span class="co">#&gt;                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                    0    31</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                    1    24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                    2    39</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                    3    24</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                    4    32</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="variables-with-many-missing-values">Variables with many missing values<a class="anchor" aria-label="anchor" href="#variables-with-many-missing-values"></a>
-</h3>
-<p>In some cases, it might seem a bit questionable to replace all
-missing values based on observed distribution. This is particularly so
-<strong>when the proportion of missing values in the variable is
-particularly high</strong> (the threshold for being “high” is of course
-quite subjective and depends on the context of the analysis).</p>
-<p>The function <code><a href="../reference/optimize_for_rf.html">optimize_for_rf()</a></code> allows to set a
-<strong>threshold for the proportion of missing values</strong> in a
-variable <strong>above which the missing values will not be replaced by
-a random value but rather by a character string making the absence of
-value a category in itself</strong>. This threshold is set to 0.3333 by
-default, but can be changed using the <code>max_missing</code>
-argument.</p>
-<p>In our dataset, here are the variables which contain more than 33% of
-missing values:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html" class="external-link">summarise_all</a></span><span class="op">(</span><span class="va">is_mainly_missing</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                           [,1]</span></span>
-<span><span class="co">#&gt; id                       FALSE</span></span>
-<span><span class="co">#&gt; age                      FALSE</span></span>
-<span><span class="co">#&gt; regular_eating            TRUE</span></span>
-<span><span class="co">#&gt; genre                    FALSE</span></span>
-<span><span class="co">#&gt; taille                   FALSE</span></span>
-<span><span class="co">#&gt; sorbet_fraise            FALSE</span></span>
-<span><span class="co">#&gt; sorbet_framboise         FALSE</span></span>
-<span><span class="co">#&gt; sorbet_passion           FALSE</span></span>
-<span><span class="co">#&gt; sorbet_citron            FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_vanille     FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_chocolat    FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_rhumraisins FALSE</span></span>
-<span><span class="co">#&gt; creme_glacee_caramel      TRUE</span></span>
-<span><span class="co">#&gt; comment                   TRUE</span></span></code></pre></div>
-<p>There are many missing values (40%) in the variable
-<code>regular_eating</code>, as many people did not answer the question
-“Do you eat ice cream regularly?”. Maybe the term “regularly” should
-have been defined, and thus people not answering is a sign that they are
-unsure about the answer, possibly meaning that they actually eat ice
-cream with a frequency somewhat in the middle of “not regular” and
-“regular”. In that regard, we could then consider that the missing value
-is in fact an answer, and we could replace the missing values with a
-character string “Unsure” (or any other string of your choice).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">regular_eating</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
-<span><span class="co">#&gt;   regular_eating     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               45</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui               45</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="color: #BB0000;">NA</span>                60</span></span>
-<span></span>
-<span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>regular_eating<span class="op">=</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">regular_eating</span>,replace_NA_with<span class="op">=</span><span class="st">"Pas sûr(e)"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">regular_eating</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
-<span><span class="co">#&gt;   regular_eating     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               45</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui               45</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Pas sûr(e)        60</span></span></code></pre></div>
-<p>Another variable has many missing answers:
-<code>creme_glacee_caramel</code>. This variable is a bit different from
-the previous one, as it is not a question corresponding to a categorical
-answer but to a <strong>pseudo-numeric (ordinal) one</strong>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">creme_glacee_caramel</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
-<span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           12</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement            9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      91</span></span></code></pre></div>
-<p>So, there are actually 61% of missing values in this variable. Why
-would that be? Maybe most people have never tasted caramel ice cream and
-could not provide an answer to the question whether they liked it or
-not. In that case, it could also be argued that a missing answer is in
-fact a informational answer… But if included in a random forest model
-<code>creme_glacee_caramel</code> would be treated as a numeric
-(ordinal) variable: so technically we cannot replace missing answers
-with a given value as if they were a valid answer. The safest course of
-action is to <strong>remove this variable from the dataset</strong>
-before running a random forest model.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="put-everything-together-prepare-data-for-running-a-random-forest-model">Put everything together: prepare data for running a random forest
-model<a class="anchor" aria-label="anchor" href="#put-everything-together-prepare-data-for-running-a-random-forest-model"></a>
-</h2>
-<p>To summarise, here is the workflow we would apply to prepare the
-dataset prior to running a random forest model on it:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op">&lt;-</span> <span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="co">#identifier is not relevant for the analysis and would be taken into account as numeric predictor</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co"># comment identified with is_free_text()</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">comment</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="co"># replace "Non renseigné" values with proper NAs</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html" class="external-link">mutate_all</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="../reference/clean_improper_NAs.html">clean_improper_NAs</a></span><span class="op">(</span><span class="va">.x</span>, possible_strings<span class="op">=</span><span class="st">"Non renseigné"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co">#creme_glacee_caramel as containing too many not fillable NAs  %&gt;% </span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">creme_glacee_caramel</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="co">#optimize all remaining variables for random forest</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html" class="external-link">mutate_all</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">.x</span>, threshold_missing_proportion<span class="op">=</span><span class="fl">0.3333</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside>
+  </main>
 </div>
 
 
