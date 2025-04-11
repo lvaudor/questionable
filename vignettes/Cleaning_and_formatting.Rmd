@@ -33,6 +33,7 @@ We can try and clean the data prior to any use. For instance, we can detect colu
 ```{r}
 is_free_text(icecream$comment,max_distinct=10)
 ```
+
 We can apply this to check **all columns** of the dataset:
 
 ```{r}

@@ -5,7 +5,7 @@ articles:
 - title: Articles
   navbar: ~
   contents:
-    - Intro
+    - Introduction
     - Cleaning_and_formatting
     - Running_random_forests
     - Exploring_the_link_between_two_variables

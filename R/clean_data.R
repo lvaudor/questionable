@@ -71,8 +71,8 @@ optimize_for_rf=function(x, replace_NA_with="Not provided", threshold_missing_pr
   # If there are so many NAs that observed distribution is dubious and NAs cannot be filled randomly,
   # we consider that a NA is a category in itself
   if(length(ind)>threshold_missing_proportion*length(result) & is.character(result)){
-    result=case_when(is.na(result)~replace_NA_with,
-                     TRUE~result)
+    result=dplyr::case_when(is.na(result)~replace_NA_with,
+                            TRUE~result)
     return(result)
   }
   # or in case the variable is numeric, we keep the NA as is

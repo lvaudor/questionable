@@ -1,9 +1,0 @@
-is_not_free_text=function(x,max_distinct=20){
-  if(!is.character(x)){
-    return(TRUE)
-  }
-  if(length(unique(x))>max_distinct){
-    return(FALSE)
-  }
-  return(TRUE)
-}

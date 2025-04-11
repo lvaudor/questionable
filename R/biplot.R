@@ -11,9 +11,32 @@
 #   }
 #   return(tQ)
 # }
-
+#' Assesses the types of variables (quantitative or qualitative) for a bivariate analysis
+#' @param dataset the dataset containing the variables
+#' @param x the name of first variable
+#' @param y the name of second variable
+#' @returns the type of bivariate analysis (either quanti-quanti, quali-quanti or quali-quali)
+#' @export
+#' @examples
+#' # example code
+#' data(icecream)
+#' biplot(icecream,"creme_glacee_vanille","creme_glacee_chocolat")
+#' biplot(icecream,"age","creme_glacee_chocolat")
+#' biplot(icecream,"age","taille")
+bivar_type=function(dataset,x,y){
+  modex="quanti"
+  modey="quanti"
+  if(mode(as.vector(dataset[[x]]))=="character"){modex="quali"}
+  if(mode(as.vector(dataset[[y]]))=="character"){modey="quali"}
+  type=paste0(modex,"-",modey)
+  if(type=="quanti-quali"){
+    z=y;y=x;x=z
+    type="quali-quanti"
+  }
+  return(type)
+}
 #' Performs a plot crossing two variables, adapting to the kind of variable (qualitative or quantitative)
-#'
+#' @param dataset the dataset containing the variables
 #' @param x the name of first variable
 #' @param y the name of second variable
 #' @export
@@ -24,44 +47,43 @@
 #' biplot(icecream,"age","creme_glacee_chocolat")
 #' biplot(icecream,"age","taille")
 biplot=function(dataset,x,y){
-  modex="quanti"
-  modey="quanti"
-  if(mode(as.vector(dataset[[x]]))=="character"){modex="quali"}
-  if(mode(as.vector(dataset[[y]]))=="character"){modey="quali"}
-  type=paste0(modex,modey)
-  if(type=="quantiquali"){
-    z=y;y=x;x=z
-    type="qualiquanti"
-  }
-  dat=select(dataset,all_of(c(x,y)))
+  type=bivar_type(dataset,x,y)
+  dat=dataset %>%
+    dplyr::select(all_of(c(x,y)))
   colnames(dat)=c("x","y")
   # quali vs quanti
-  if(type=="qualiquanti"){
-    datg= dat %>% group_by(x) %>% summarise(y=mean(y, na.rm=T))
-    p=ggplot(dat,aes(x=x,y=y))+
-      geom_boxplot(fill="yellow")+
-      geom_point(data=datg,aes(x=x,y=y))+
-      theme(axis.text.x=element_text(angle=90))
+  if(type=="quali-quanti"){
+    datg= dat %>%
+      dplyr::group_by(x) %>%
+      dplyr::summarise(y=mean(y, na.rm=T))
+    p=ggplot2::ggplot(dat,ggplot2::aes(x=x,y=y))+
+      ggplot2::geom_boxplot(fill="yellow")+
+      ggplot2::geom_point(data=datg,ggplot2::aes(x=x,y=y))+
+      ggplot2::theme(axis.text.x=ggplot2::element_text(angle=90))
   }
   # quali vs quali
-  if(type=="qualiquali"){
-    p=ggplot(dat,aes(x=x,fill=y))+
-      geom_bar(position="fill")+
-      theme(axis.text.x=element_text(angle=90))
+  if(type=="quali-quali"){
+    p=ggplot2::ggplot(dat,aes(x=x,fill=y))+
+      ggplot2::geom_bar(position="fill")+
+      ggplot2::theme(axis.text.x=ggplot2::element_text(angle=90))
   }
   # quanti vs quanti
-  if(type=="quantiquanti"){
-    p=ggplot(dat,aes(x=x,y=y))+geom_point(alpha=0.5,color="red")+geom_smooth()
+  if(type=="quanti-quanti"){
+    p=ggplot2::ggplot(dat,ggplot2::aes(x=x,y=y))+
+      ggplot2::geom_point(alpha=0.5,color="red")+
+      ggplot2::geom_smooth()
     mean_number_of_individuals_by_location=dat %>%
-      group_by(x,y) %>%
-      summarise(n=n(),.groups="drop") %>%
-      pull(n) %>%
+      dplyr::group_by(x,y) %>%
+      dplyr::summarise(n=dplyr::n(),.groups="drop") %>%
+      dplyr::pull(n) %>%
       mean()
     if(mean_number_of_individuals_by_location>5){
-     p=p+geom_jitter(alpha=0.5,position=position_jitter(width=0.1,height=0.1))
+     p=p+
+       ggplot2::geom_jitter(alpha=0.5,
+                            position=ggplot2::position_jitter(width=0.1,height=0.1))
     }
     }
-  p=p+xlab(x)
-  p=p+ylab(y)
+  p=p+ggplot2::xlab(x)
+  p=p+ggplot2::ylab(y)
   return(p)
 }

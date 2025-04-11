@@ -2,10 +2,12 @@
 
 export("%>%")
 export(biplot)
+export(bivar_type)
 export(clean_improper_NAs)
 export(is_free_text)
 export(is_mainly_missing)
 export(optimize_for_rf)
+export(partial_dependence_plot)
 export(run_rf)
 export(test_pval)
 importFrom(magrittr,"%>%")

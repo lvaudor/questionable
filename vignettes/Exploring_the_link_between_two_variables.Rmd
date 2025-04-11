@@ -15,5 +15,12 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+library(dplyr)
 library(questionable)
+library(randomForest)
+data(icecream)
 ```
+
+
+
+

@@ -1,8 +1,8 @@
 ---
-title: "Intro"
+title: "Introduction"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Intro}
+  %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -43,3 +43,14 @@ This dataset contains `nrow(icecream)` rows corresponding to the number of respo
 icecream %>% 
   dplyr::glimpse()
 ```
+
+Here are the (imaginary) questions that were asked to the (imaginary) French respondants:
+
+- `age`: How old are you? (in years)
+- `genre`: What is your gender? (masculine/feminine/non
+binary)
+- `taille`: What is your size? (in centimeters)
+- `regular eating`: Do you regularly eat icecreams? (yes/no)
+- `sorbet_X`: Do you like X-flavoured sorbet? (1_not at all, 2_a little, 3_quite a lot, 4_a lot, 5_very much).
+- `icecream_X`: Do you like X-flavoured ice-cream? (1_not at all, 2_a little, 3_quite a lot, 4_a lot, 5_very much).
+

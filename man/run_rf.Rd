@@ -2,17 +2,17 @@
 % Please edit documentation in R/run_rf.R
 \name{run_rf}
 \alias{run_rf}
-\title{Tests whether vector is free text or not}
+\title{Runs a random forest model}
 \usage{
-run_rf(data, reponse = colnames(data)[1], plot = FALSE, clean_name = FALSE)
+run_rf(data, response = colnames(data)[1], plot = FALSE, clean_name = FALSE)
 }
 \arguments{
-\item{x}{the vector to optimize for running a random forest}
+\item{data}{the data (optimized for running a rf)}
 
-\item{replace_NA_with}{the character string used to replace NA as category in categorical responses. Defaults to "Not provided"}
+\item{response}{the name of the response variable}
 }
 \description{
-Tests whether vector is free text or not
+Runs a random forest model
 }
 \examples{
 # example code
@@ -20,5 +20,5 @@ data(icecream)
 run_rf(icecream \%>\%
           select(-id) \%>\%
           mutate_all(optimize_for_rf),
-          reponse="sorbet_citron")
+          response="sorbet_citron")
 }

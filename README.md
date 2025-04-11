@@ -1,10 +1,16 @@
 # questionable
 
-To install this package, run the following commands:
+To install this package, run the following commands.
+
+
+If remotes is not installed yet
 
 ```{r}
-# if remotes is not installed yet
 install.packages("remotes")
-# and then:
+```
+
+Once remotes is installed:
+
+```{r}
 remotes::install_github("lvaudor/questionable")
 ```
