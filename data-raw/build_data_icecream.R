@@ -1,5 +1,5 @@
 library(tidyverse)
-n=150
+n=1500
 values=c("0_pas_du_tout","1_un peu","2_moyennement","3_beaucoup","4_énormément")
 
 #sample size values with proportions

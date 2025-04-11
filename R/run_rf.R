@@ -29,7 +29,7 @@ run_rf=function(data,response=colnames(data)[1],plot=FALSE,clean_name=FALSE){
                       ggplot2::aes(x=variable, y=importance))+
       ggplot2::geom_point()+
       ggplot2::coord_flip()+
-      ggplot2::ggtitle(stringr::str_c("Prediction of \n"))+
+      ggplot2::ggtitle(paste0("Prediction of \n",response))+
       ggplot2::xlab("Predictors")+
       ggplot2::theme(plot.title=ggplot2::element_text(hjust=1))
     plot(p)
