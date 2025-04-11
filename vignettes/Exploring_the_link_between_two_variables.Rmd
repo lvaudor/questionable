@@ -1,5 +1,5 @@
 ---
-title: "Exploring_the_link_between_two_variables"
+title: "Exploring the link between two variables"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Exploring_the_link_between_two_variables}
