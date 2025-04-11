@@ -33,7 +33,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/Intro.html">Intro</a></li>
+<li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Cleaning_and_formatting.html">Cleaning and formatting</a></li>
     <li><a class="dropdown-item" href="../articles/Running_random_forests.html">Running random forests</a></li>
     <li><a class="dropdown-item" href="../articles/Exploring_the_link_between_two_variables.html">Exploring_the_link_between_two_variables</a></li>
@@ -67,19 +67,105 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lvaudor.github.io/questionable/">questionable</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'questionable'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     biplot</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lvaudor.github.io/questionable/">questionable</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">icecream</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="first-exploration">First exploration<a class="anchor" aria-label="anchor" href="#first-exploration"></a>
+</h2>
+<p>Now, let’s explore how <strong>some ice-cream consumption
+characteristics relate to other characteristics</strong>.</p>
+<p>We prepare the data for running a random forest:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">icecream_for_rf</span><span class="op">=</span><span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span>,<span class="op">-</span><span class="va">comment</span>,<span class="op">-</span><span class="va">creme_glacee_caramel</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html" class="external-link">mutate_all</a></span><span class="op">(</span><span class="va">optimize_for_rf</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s start with exploring what could explain the <strong>regularity
+of eating ice-cream</strong>. Here is the distribution of the
+variable:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">icecream_for_rf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">regular_eating</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
+<span><span class="co">#&gt;   regular_eating     n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               22</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Non renseigné     84</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Oui               44</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="running-a-wild-guess-random-forest">Running a “wild guess” random forest<a class="anchor" aria-label="anchor" href="#running-a-wild-guess-random-forest"></a>
+</h2>
+<p>Imagine you have no idea whatsoever about possible explaining
+factors. Let’s just run a random forest with all possible
+predictors.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span>,</span>
+<span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
+<span>          plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-4-1.png" width="700">
+This displays the <strong>relative importance of the predictors</strong>
+in predicting the response variable.</p>
+</div>
+<div class="section level2">
+<h2 id="understanding-the-predictors-effect">Understanding the predictor’s effect<a class="anchor" aria-label="anchor" href="#understanding-the-predictors-effect"></a>
+</h2>
+<p>Now, let’s for instance consider the effect of age on whether or not
+people regularly eat ice cream.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/partial_dependence_plot.html">partial_dependence_plot</a></span><span class="op">(</span>rf<span class="op">=</span><span class="va">rf</span>,</span>
+<span>                        predictor<span class="op">=</span><span class="st">"age"</span>,</span>
+<span>                        probabilities<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-5-1.png" width="700">
+The plot above shows the <strong>normalized logit scores</strong> for
+the <strong>probability of being a regular eater of ice cream</strong>.
+The higher the score, the more likely it is that a person is a regular
+eater of ice cream. Here in particular, we can see that younger people
+are more likely to assert themselves as regular eaters of ice cream.</p>
+</div>
+<div class="section level2">
+<h2 id="on-collinearity">On collinearity<a class="anchor" aria-label="anchor" href="#on-collinearity"></a>
+</h2>
+<p>According to the random forest importance assessment of predictors’
+importance, <strong>both age and size of the respondant are important
+predictors</strong>. Well. As an omniscient creator of the data, I can
+tell you that, yes, indeed answers regarding regular eating of icecream
+were made dependent on age. On the other hand, I did not make them
+dependent on the size of the respondant, which would be (from my
+non-expert point of view on ice-cream consumption anyway) an odd
+choice.</p>
+<p>On the other hand, I did make the answer dependent on gender, and I
+did make size dependent on age and gender. A not-too-wild guess is that
+size somehow <strong>integrates the effect of more relevant
+predictors</strong>, making it appear relatively more important than it
+actually is, and making these other, more meaningful predictors appear
+less important than they actually are.</p>
+<p>This hence illustrate that although random forests are a great tool
+for exploratory data analysis, they are not a substitute for a good
+understanding of the data and the domain (and certainly not a free card
+to include probably irrelevant descriptors in the data).</p>
+<p>So, let’s run a random forest excluding variable <code>taille</code>
+first, which will probably be a safer basis for later
+interpretations.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">taille</span><span class="op">)</span>,</span>
+<span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
+<span>          plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-6-1.png" width="700">
+You can see that the relative importance of gender appears higher now
+that we have removed size from the mix.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Lise Vaudor.</p>
 </div>
 
 <div class="pkgdown-footer-right">

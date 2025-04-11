@@ -4,9 +4,9 @@ pkgdown_sha: ~
 articles:
   Cleaning_and_formatting: Cleaning_and_formatting.html
   Exploring_the_link_between_two_variables: Exploring_the_link_between_two_variables.html
-  Intro: Intro.html
+  Introduction: Introduction.html
   Running_random_forests: Running_random_forests.html
-last_built: 2025-04-07T07:57Z
+last_built: 2025-04-11T09:37Z
 urls:
   reference: https://lvaudor.github.io/questionable/reference
   article: https://lvaudor.github.io/questionable/articles
