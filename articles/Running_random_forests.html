@@ -36,7 +36,7 @@
 <li><a class="dropdown-item" href="../articles/Introduction.html">Introduction</a></li>
     <li><a class="dropdown-item" href="../articles/Cleaning_and_formatting.html">Cleaning and formatting</a></li>
     <li><a class="dropdown-item" href="../articles/Running_random_forests.html">Running random forests</a></li>
-    <li><a class="dropdown-item" href="../articles/Exploring_the_link_between_two_variables.html">Exploring_the_link_between_two_variables</a></li>
+    <li><a class="dropdown-item" href="../articles/Exploring_the_link_between_two_variables.html">Exploring the link between two variables</a></li>
   </ul>
 </li>
       </ul>
@@ -91,9 +91,9 @@ variable:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   regular_eating     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               22</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Non renseigné     84</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Oui               44</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               32</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Non renseigné     81</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Oui               37</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="running-a-wild-guess-random-forest">Running a “wild guess” random forest<a class="anchor" aria-label="anchor" href="#running-a-wild-guess-random-forest"></a>
@@ -105,9 +105,9 @@ predictors.</p>
 <code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span>,</span>
 <span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
 <span>          plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-4-1.png" width="700">
-This displays the <strong>relative importance of the predictors</strong>
-in predicting the response variable.</p>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p>This displays the <strong>relative importance of the
+predictors</strong> in predicting the response variable.</p>
 </div>
 <div class="section level2">
 <h2 id="understanding-the-predictors-effect">Understanding the predictor’s effect<a class="anchor" aria-label="anchor" href="#understanding-the-predictors-effect"></a>
@@ -118,8 +118,8 @@ people regularly eat ice cream.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/partial_dependence_plot.html">partial_dependence_plot</a></span><span class="op">(</span>rf<span class="op">=</span><span class="va">rf</span>,</span>
 <span>                        predictor<span class="op">=</span><span class="st">"age"</span>,</span>
 <span>                        probabilities<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-5-1.png" width="700">
-The plot above shows the <strong>normalized logit scores</strong> for
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-5-1.png" width="480"></p>
+<p>The plot above shows the <strong>normalized logit scores</strong> for
 the <strong>probability of being a regular eater of ice cream</strong>.
 The higher the score, the more likely it is that a person is a regular
 eater of ice cream. Here in particular, we can see that younger people
@@ -154,8 +154,8 @@ interpretations.</p>
 <span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">taille</span><span class="op">)</span>,</span>
 <span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
 <span>          plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-6-1.png" width="700">
-You can see that the relative importance of gender appears higher now
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p>You can see that the relative importance of gender appears higher now
 that we have removed size from the mix.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
