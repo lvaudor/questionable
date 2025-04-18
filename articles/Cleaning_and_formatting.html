@@ -122,12 +122,12 @@ See below an example on column <code>creme_glacee_caramel</code></p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement           10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            14</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Non renseigné           93</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout          125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                82</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement          109</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup             133</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément           152</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Non renseigné          899</span></span>
 <span><span class="co"># After correction</span></span>
 <span><span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>creme_glacee_caramel<span class="op">=</span><span class="fu"><a href="../reference/clean_improper_NAs.html">clean_improper_NAs</a></span><span class="op">(</span><span class="va">creme_glacee_caramel</span>,</span>
@@ -137,12 +137,12 @@ See below an example on column <code>creme_glacee_caramel</code></p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement           10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            14</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      93</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout          125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                82</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement          109</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup             133</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément           152</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                     899</span></span></code></pre></div>
 <p>Now, we apply this function to all columns :</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">icecream_cleaned</span> <span class="op">&lt;-</span> <span class="va">icecream</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -184,10 +184,10 @@ of <code>x</code> (i.e. the distribution of all non-missing values in
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
 <span><span class="co">#&gt;   genre           n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme          65</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme          60</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="color: #BB0000;">NA</span>             15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme         657</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme         607</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    86</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="color: #BB0000;">NA</span>            150</span></span>
 <span></span>
 <span><span class="co"># Optimized for rf: level frequencies</span></span>
 <span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -197,9 +197,9 @@ of <code>x</code> (i.e. the distribution of all non-missing values in
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   genre           n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme          75</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme          64</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    11</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> femme         727</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> homme         677</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> non binaire    96</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="ordinal-variables-as-numeric-variables">Ordinal variables as numeric variables<a class="anchor" aria-label="anchor" href="#ordinal-variables-as-numeric-variables"></a>
@@ -217,12 +217,12 @@ numeric variables.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   creme_glacee_vanille     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           17</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                22</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement           36</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup              20</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            25</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      30</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout          118</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu               206</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement          215</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup             335</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément           326</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                     300</span></span>
 <span><span class="co"># Optimized for rf: level frequencies</span></span>
 <span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>creme_glacee_vanille<span class="op">=</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">creme_glacee_vanille</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -231,11 +231,11 @@ numeric variables.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   creme_glacee_vanille     n</span></span>
 <span><span class="co">#&gt;                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                    0    18</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                    1    30</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                    2    48</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                    3    25</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                    4    29</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                    0   147</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                    1   253</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                    2   275</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                    3   433</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                    4   392</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="variables-with-many-missing-values">Variables with many missing values<a class="anchor" aria-label="anchor" href="#variables-with-many-missing-values"></a>
@@ -273,7 +273,7 @@ missing values:</p>
 <span><span class="co">#&gt; creme_glacee_rhumraisins FALSE</span></span>
 <span><span class="co">#&gt; creme_glacee_caramel      TRUE</span></span>
 <span><span class="co">#&gt; comment                   TRUE</span></span></code></pre></div>
-<p>There are many missing values (72%) in the variable
+<p>There are many missing values (69%) in the variable
 <code>regular_eating</code>, as many people did not answer the question
 “Do you eat ice cream regularly?”. Maybe the term “regularly” should
 have been defined, and thus people not answering is a sign that they are
@@ -289,9 +289,9 @@ character string “Unsure” (or any other string of your choice).</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   regular_eating     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui               23</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="color: #BB0000;">NA</span>               108</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non              164</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui              302</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="color: #BB0000;">NA</span>              <span style="text-decoration: underline;">1</span>034</span></span>
 <span></span>
 <span><span class="va">icecream_cleaned</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>regular_eating<span class="op">=</span><span class="fu"><a href="../reference/optimize_for_rf.html">optimize_for_rf</a></span><span class="op">(</span><span class="va">regular_eating</span>,replace_NA_with<span class="op">=</span><span class="st">"Pas sûr(e)"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -300,9 +300,9 @@ character string “Unsure” (or any other string of your choice).</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   regular_eating     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non               19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui               23</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Pas sûr(e)       108</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non              164</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Oui              302</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Pas sûr(e)      <span style="text-decoration: underline;">1</span>034</span></span></code></pre></div>
 <p>Another variable has many missing answers:
 <code>creme_glacee_caramel</code>. This variable is a bit different from
 the previous one, as it is not a question corresponding to a categorical
@@ -314,13 +314,13 @@ answer but to a <strong>pseudo-numeric (ordinal) one</strong>.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   creme_glacee_caramel     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout           11</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement           10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup               7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément            14</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                      93</span></span></code></pre></div>
-<p>So, there are actually 62% of missing values in this variable. Why
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0_pas_du_tout          125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1_un peu                82</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2_moyennement          109</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3_beaucoup             133</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 4_énormément           152</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> <span style="color: #BB0000;">NA</span>                     899</span></span></code></pre></div>
+<p>So, there are actually 60% of missing values in this variable. Why
 would that be? Maybe most people have never tasted caramel ice cream and
 could not provide an answer to the question whether they liked it or
 not. In that case, it could also be argued that a missing answer is in
