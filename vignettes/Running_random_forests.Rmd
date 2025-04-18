@@ -80,7 +80,7 @@ So, let's run a random forest excluding variable `taille` first, which will prob
 rf=run_rf(icecream_for_rf %>% 
             dplyr::select(-taille),
           response="regular_eating",
-          plot=TRUE)
+          plot=TRUE,min_importance=0)
 ```
 
 You can see that the relative importance of gender appears higher now that we have removed size from the mix.
