@@ -15,7 +15,7 @@
 run_rf=function(data,
                 response=colnames(data)[1],
                 plot=FALSE,
-                min_importance=1){
+                min_importance=10){
   data=na.omit(data)
   datarf=dplyr::select(data,-dplyr::one_of(response))
   responserf=data %>%
@@ -37,7 +37,7 @@ run_rf=function(data,
         dplyr::slice(1:5)
       warning(paste0("All predictors have an importance <",
                      min_importance,
-                     ". The top 5 predictors are plotted instead.")
+                     "%. The top 5 predictors are plotted instead."))
     }
     p=ggplot2::ggplot(impDF_keep,
                       ggplot2::aes(x=variable, y=importance))+

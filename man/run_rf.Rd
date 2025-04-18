@@ -4,12 +4,14 @@
 \alias{run_rf}
 \title{Runs a random forest model}
 \usage{
-run_rf(data, response = colnames(data)[1], plot = FALSE, clean_name = FALSE)
+run_rf(data, response = colnames(data)[1], plot = FALSE, min_importance = 10)
 }
 \arguments{
 \item{data}{the data (optimized for running a rf)}
 
 \item{response}{the name of the response variable}
+
+\item{plot}{whether or not to plot the importance of predictors. Defaults to FALSE}
 }
 \description{
 Runs a random forest model
@@ -18,7 +20,8 @@ Runs a random forest model
 # example code
 data(icecream)
 run_rf(icecream \%>\%
-          select(-id) \%>\%
-          mutate_all(optimize_for_rf),
-          response="sorbet_citron")
+          dplyr::select(-id) \%>\%
+          dplyr::mutate_all(optimize_for_rf),
+          response="sorbet_citron",
+          plot=TRUE)
 }
