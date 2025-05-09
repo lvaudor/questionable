@@ -104,7 +104,8 @@ predictors.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span>,</span>
 <span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
-<span>          plot<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>          plot<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>          min_importance<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Running_random_forests_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>This displays the <strong>relative importance of the
 predictors</strong> in predicting the response variable.</p>
@@ -153,7 +154,8 @@ interpretations.</p>
 <code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">taille</span><span class="op">)</span>,</span>
 <span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
-<span>          plot<span class="op">=</span><span class="cn">TRUE</span>,min_importance<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<span>          plot<span class="op">=</span><span class="cn">TRUE</span>,</span>
+<span>          min_importance<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Running_random_forests_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>You can see that the relative importance of gender appears higher now
 that we have removed size from the mix.</p>
@@ -169,7 +171,7 @@ that we have removed size from the mix.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>
