@@ -20,8 +20,8 @@ Suggests:
 VignetteBuilder: knitr
 Imports: 
     dplyr,
-    forcats,
     ggplot2,
     magrittr,
     randomForest,
-    stringr
+    stringr,
+    forcats
