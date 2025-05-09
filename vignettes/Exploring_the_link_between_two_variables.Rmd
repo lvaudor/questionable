@@ -66,7 +66,7 @@ test_pval(icecream,"age","taille")
 
 For a general overview of all variables' inter-relationships, you can use the function `pval_graph()`. This function will calculate the p-values for all pairs of variables in the dataset. The resulting graph will display the p-values in a heatmap format, allowing for easy identification of significant relationships.
 
-```{r, fig.width=6, fig.height=6}
+```{r, fig.width=10, fig.height=6}
 data(icecream)
 pval_graph(icecream %>% dplyr::select(-comment,-id), var_reorder=TRUE)
 ```

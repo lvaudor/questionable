@@ -25,7 +25,8 @@ icecream=tibble::tibble(
   mutate(regular_eating=case_when(age<20 & genre!="femme"~swp(n,c("Oui","Non"),c(90,10)),
                                   age>20 & genre!="femme"~swp(n,c("Oui","Non"),c(60,40)),
                                   age<20 & genre=="homme"~swp(n,c("Oui","Non"),c(90,10)),
-                                  age>20 & genre=="homme"~swp(n,c("Oui","Non"),c(30,70)))) %>%
+                                  age>20 & genre=="homme"~swp(n,c("Oui","Non"),c(30,70)),
+                                  TRUE~swp(n,c("Oui","Non"),c(30,70)))) %>%
   mutate(sorbet_fraise=case_when(genre=="homme"~swp(n,values,c(30,20,30,20,10)),
                                  genre=="femme"~swp(n,values,c(20,20,20,20,20)),
                                  genre=="non binaire"~swp(n,values,c(20,20,20,20,20))),

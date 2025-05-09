@@ -22,6 +22,12 @@ data(icecream)
 run_rf(icecream \%>\%
           dplyr::select(-id) \%>\%
           dplyr::mutate_all(optimize_for_rf),
-          response="sorbet_citron",
+          response="regular_eating",
+          plot=TRUE)
+
+run_rf(icecream \%>\%
+          dplyr::select(-id) \%>\%
+          dplyr::mutate_all(optimize_for_rf),
+          response="taille",
           plot=TRUE)
 }

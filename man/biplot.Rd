@@ -4,7 +4,7 @@
 \alias{biplot}
 \title{Performs a plot crossing two variables, adapting to the kind of variable (qualitative or quantitative)}
 \usage{
-biplot(dataset, x, y, method = "lm", add_pval = TRUE)
+biplot(dataset, x, y, method = NULL, add_pval = TRUE)
 }
 \arguments{
 \item{dataset}{the dataset containing the variables}
@@ -15,7 +15,7 @@ biplot(dataset, x, y, method = "lm", add_pval = TRUE)
 
 \item{add_pval}{defaults to TRUE, if TRUE, the p-value of the test is added to the title of the plot}
 
-\item{in}{case X and Y are quantitative, the method of regression (defaults to "lm" for a linear regression, can be set to NULL for loess or GAM regressions)}
+\item{in}{case X and Y are quantitative, the method of regression (defaults to NULL for non-linear regression, can be set to "lm" for a linear regression)}
 }
 \description{
 Performs a plot crossing two variables, adapting to the kind of variable (qualitative or quantitative)

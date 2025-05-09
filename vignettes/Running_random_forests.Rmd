@@ -55,6 +55,22 @@ rf=run_rf(icecream_for_rf,
 
 This displays the **relative importance of the predictors** in predicting the response variable.
 
+Now, this importance is only interpretable insofar as the model performs well. Let's check the performance of the model:
+
+```{r}
+rf$performance
+```
+
+Here, we're dealing with a categorical response. The overall performance corresponds to the model predicting correctly the "regular_eating" response in about `r round(rf$performance,2)*100` % of the cases. This should be mitigated by the fact that the response is not balanced. We can check this by looking at the confusion matrix:
+
+```{r}
+rf$rf$confusion
+```
+The "Yes"s and "No"s are actually predicted with quite low performance due to frequent confusion with the "Non renseigné"s.
+
+
+
+
 # Understanding the predictor's effect
 
 Now, let's for instance consider the effect of age on whether or not people regularly eat ice cream.

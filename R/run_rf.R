@@ -10,7 +10,13 @@
 #' run_rf(icecream %>%
 #'           dplyr::select(-id) %>%
 #'           dplyr::mutate_all(optimize_for_rf),
-#'           response="sorbet_citron",
+#'           response="regular_eating",
+#'           plot=TRUE)
+#'
+#' run_rf(icecream %>%
+#'           dplyr::select(-id) %>%
+#'           dplyr::mutate_all(optimize_for_rf),
+#'           response="taille",
 #'           plot=TRUE)
 run_rf=function(data,
                 response=colnames(data)[1],
@@ -49,7 +55,7 @@ run_rf=function(data,
     plot(p)
   }
   if("err.rate" %in% names(myrf)){
-    perf=1-myrf$err.rate[1000,1]
+    perf=1-myrf$err.rate[nrow(myrf$err.rate),1]
   }
   if("rsq" %in% names(myrf)){
     perf=myrf$rsq[1000]
@@ -57,5 +63,6 @@ run_rf=function(data,
   return(list(rf=myrf,
               response=response,
               datarf=as.data.frame(datarf),
-              impDF=impDF, performance=perf))
+              impDF=impDF,
+              performance=perf))
 }

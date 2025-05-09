@@ -39,7 +39,7 @@ bivar_type=function(dataset,x,y){
 #' @param dataset the dataset containing the variables
 #' @param x the name of first variable
 #' @param y the name of second variable
-#' @param in case X and Y are quantitative, the method of regression (defaults to "lm" for a linear regression, can be set to NULL for loess or GAM regressions)
+#' @param in case X and Y are quantitative, the method of regression (defaults to NULL for non-linear regression, can be set to "lm" for a linear regression)
 #' @param add_pval defaults to TRUE, if TRUE, the p-value of the test is added to the title of the plot
 #' @export
 #' @examples
@@ -49,7 +49,7 @@ bivar_type=function(dataset,x,y){
 #' biplot(icecream,"creme_glacee_chocolat","age")
 #' biplot(icecream,"age","taille")
 #' biplot(icecream,"age","taille",method=NULL)
-biplot=function(dataset,x,y, method="lm", add_pval=TRUE){
+biplot=function(dataset,x,y, method=NULL, add_pval=TRUE){
   type=bivar_type(dataset,x,y)
   dat=dataset %>%
     dplyr::select(all_of(c(x,y)))
