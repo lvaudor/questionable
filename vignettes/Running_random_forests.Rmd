@@ -49,7 +49,8 @@ Imagine you have no idea whatsoever about possible explaining factors. Let's jus
 ```{r, fig.height=5, fig.width=7}
 rf=run_rf(icecream_for_rf,
           response="regular_eating",
-          plot=TRUE)
+          plot=TRUE,
+          min_importance=0)
 ```
 
 This displays the **relative importance of the predictors** in predicting the response variable.
@@ -80,7 +81,8 @@ So, let's run a random forest excluding variable `taille` first, which will prob
 rf=run_rf(icecream_for_rf %>% 
             dplyr::select(-taille),
           response="regular_eating",
-          plot=TRUE,min_importance=0)
+          plot=TRUE,
+          min_importance=0)
 ```
 
 You can see that the relative importance of gender appears higher now that we have removed size from the mix.

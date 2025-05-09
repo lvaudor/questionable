@@ -23,5 +23,51 @@ data(icecream)
 ```
 
 
+# Plotting the relationship between two variables
 
+When trying to explore the link between two variables X and Y, you can use function `biplot()`. It adapts to the quantitative or categorical nature of variables X and Y.
+
+## Two categorical variables
+
+```{r,fig.width=5, fig.height=4, warning=FALSE, message=TRUE}
+biplot(icecream,"creme_glacee_vanille","creme_glacee_chocolat")
+test_pval(icecream,"creme_glacee_vanille","creme_glacee_chocolat")
+```
+
+In this case, a chi-squared test is performed. The p-value is calculated and displayed in the plot's title. The p-value is also accessible via the function `test_pval()`.
+
+## One quantitative, one categorical variable
+
+
+```{r, fig.width=5, fig.height=4, warning=FALSE, message=FALSE}
+biplot(icecream,"age","creme_glacee_chocolat")
+test_pval(icecream,"age","creme_glacee_chocolat")
+```
+
+In this case, a ANOVA is performed.
+
+## Two quantitative variables
+
+
+```{r, fig.width=5, fig.height=4, warning=FALSE, message=FALSE}
+biplot(icecream,"age","taille")
+```
+
+In the case of a non-linear regression (as displayed above) no test is carried out.
+
+Running a linear regression (method="lm" for **L**inear **M**odel) allows a test to be performed.
+
+```{r, fig.width=5, fig.height=4, warning=FALSE, message=FALSE}
+biplot(icecream,"age","taille",method="lm")
+test_pval(icecream,"age","taille")
+```
+
+# General overview of the p-values
+
+For a general overview of all variables' inter-relationships, you can use the function `pval_graph()`. This function will calculate the p-values for all pairs of variables in the dataset. The resulting graph will display the p-values in a heatmap format, allowing for easy identification of significant relationships.
+
+```{r, fig.width=6, fig.height=6}
+data(icecream)
+pval_graph(icecream %>% dplyr::select(-comment,-id), var_reorder=TRUE)
+```
 

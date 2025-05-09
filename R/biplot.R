@@ -39,14 +39,17 @@ bivar_type=function(dataset,x,y){
 #' @param dataset the dataset containing the variables
 #' @param x the name of first variable
 #' @param y the name of second variable
+#' @param in case X and Y are quantitative, the method of regression (defaults to "lm" for a linear regression, can be set to NULL for loess or GAM regressions)
+#' @param add_pval defaults to TRUE, if TRUE, the p-value of the test is added to the title of the plot
 #' @export
 #' @examples
 #' # example code
 #' data(icecream)
 #' biplot(icecream,"creme_glacee_vanille","creme_glacee_chocolat")
-#' biplot(icecream,"age","creme_glacee_chocolat")
+#' biplot(icecream,"creme_glacee_chocolat","age")
 #' biplot(icecream,"age","taille")
-biplot=function(dataset,x,y){
+#' biplot(icecream,"age","taille",method=NULL)
+biplot=function(dataset,x,y, method="lm", add_pval=TRUE){
   type=bivar_type(dataset,x,y)
   dat=dataset %>%
     dplyr::select(all_of(c(x,y)))
@@ -62,8 +65,10 @@ biplot=function(dataset,x,y){
       ggplot2::theme(axis.text.x=ggplot2::element_text(angle=90))
   }
   # quali vs quali
+
+
   if(type=="quali-quali"){
-    p=ggplot2::ggplot(dat,aes(x=x,fill=y))+
+    p=ggplot2::ggplot(dat,ggplot2::aes(x=x,fill=y))+
       ggplot2::geom_bar(position="fill")+
       ggplot2::theme(axis.text.x=ggplot2::element_text(angle=90))
   }
@@ -71,7 +76,7 @@ biplot=function(dataset,x,y){
   if(type=="quanti-quanti"){
     p=ggplot2::ggplot(dat,ggplot2::aes(x=x,y=y))+
       ggplot2::geom_point(alpha=0.5,color="red")+
-      ggplot2::geom_smooth()
+      ggplot2::geom_smooth(method=method)
     mean_number_of_individuals_by_location=dat %>%
       dplyr::group_by(x,y) %>%
       dplyr::summarise(n=dplyr::n(),.groups="drop") %>%
@@ -85,5 +90,11 @@ biplot=function(dataset,x,y){
     }
   p=p+ggplot2::xlab(x)
   p=p+ggplot2::ylab(y)
+  if(add_pval & !is.null(method)){
+    pval=test_pval(dat,"x","y")
+    print(pval)
+    pvalstar=test_pvalstar(pval)
+    p=p+ggplot2::ggtitle(paste0("Effect of ",x, " on ", y,": ",pvalstar))
+  }
   return(p)
 }
