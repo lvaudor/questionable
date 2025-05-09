@@ -91,9 +91,9 @@ variable:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;   regular_eating     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non              221</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Non renseigné    850</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Oui              429</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Non              448</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Non renseigné    600</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Oui              452</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="running-a-wild-guess-random-forest">Running a “wild guess” random forest<a class="anchor" aria-label="anchor" href="#running-a-wild-guess-random-forest"></a>
@@ -109,17 +109,36 @@ predictors.</p>
 <p><img src="Running_random_forests_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>This displays the <strong>relative importance of the
 predictors</strong> in predicting the response variable.</p>
+<p>Now, this importance is only interpretable insofar as the model
+performs well. Let’s check the performance of the model:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf</span><span class="op">$</span><span class="va">performance</span></span>
+<span><span class="co">#&gt;       OOB </span></span>
+<span><span class="co">#&gt; 0.4059754</span></span></code></pre></div>
+<p>Here, we’re dealing with a categorical response. The overall
+performance corresponds to the model predicting correctly the
+“regular_eating” response in about 41 % of the cases. This should be
+mitigated by the fact that the response is not balanced. We can check
+this by looking at the confusion matrix:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf</span><span class="op">$</span><span class="va">rf</span><span class="op">$</span><span class="va">confusion</span></span>
+<span><span class="co">#&gt;               Non Non renseigné Oui class.error</span></span>
+<span><span class="co">#&gt; Non           115           184  63   0.6823204</span></span>
+<span><span class="co">#&gt; Non renseigné 127           210 108   0.5280899</span></span>
+<span><span class="co">#&gt; Oui            65           129 137   0.5861027</span></span></code></pre></div>
+<p>The “Yes”s and “No”s are actually predicted with quite low
+performance due to frequent confusion with the “Non renseigné”s.</p>
 </div>
 <div class="section level2">
 <h2 id="understanding-the-predictors-effect">Understanding the predictor’s effect<a class="anchor" aria-label="anchor" href="#understanding-the-predictors-effect"></a>
 </h2>
 <p>Now, let’s for instance consider the effect of age on whether or not
 people regularly eat ice cream.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/partial_dependence_plot.html">partial_dependence_plot</a></span><span class="op">(</span>rf<span class="op">=</span><span class="va">rf</span>,</span>
 <span>                        predictor<span class="op">=</span><span class="st">"age"</span>,</span>
 <span>                        probabilities<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-5-1.png" width="480"></p>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-7-1.png" width="480"></p>
 <p>The plot above shows the <strong>normalized logit scores</strong> for
 the <strong>probability of being a regular eater of ice cream</strong>.
 The higher the score, the more likely it is that a person is a regular
@@ -150,13 +169,13 @@ to include probably irrelevant descriptors in the data).</p>
 <p>So, let’s run a random forest excluding variable <code>taille</code>
 first, which will probably be a safer basis for later
 interpretations.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf</span><span class="op">=</span><span class="fu"><a href="../reference/run_rf.html">run_rf</a></span><span class="op">(</span><span class="va">icecream_for_rf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">taille</span><span class="op">)</span>,</span>
 <span>          response<span class="op">=</span><span class="st">"regular_eating"</span>,</span>
 <span>          plot<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>          min_importance<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p><img src="Running_random_forests_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <p>You can see that the relative importance of gender appears higher now
 that we have removed size from the mix.</p>
 </div>
