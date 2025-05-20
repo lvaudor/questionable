@@ -32,7 +32,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
   quantiP=!is.character(rf$datarf[[predictor]]) & !is.factor(rf$datarf[[predictor]])
   ##################################################################################
   if(!quantiR & quantiP){
-     print("qualiR-quantiP")
+    #print("qualiR-quantiP")
           tib=tibble::tibble()
           for (i in 1:length(levels(response))){
             result=do.call(randomForest::partialPlot,
@@ -67,7 +67,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
     }# end qualiR-quantiP
     ############################################################################
     if(!quantiR & !quantiP){
-      print("qualiR-qualiP")
+      #print("qualiR-qualiP")
       tib=tibble::tibble()
       for (i in 1:length(levels(response))){
         result=do.call(pdp::partial,
@@ -100,7 +100,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
   } # end qualiR-qualiP
   ##############################################################################
   if(quantiR & quantiP){
-          print("quantiR-quantiP")
+          #print("quantiR-quantiP")
           p=ggplot2::ggplot(tib,
                             ggplot2::aes(x=x,y=y,color=level))+
             ggplot2::geom_smooth()+
@@ -117,14 +117,15 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
   # end quantiR-quantiP
   ##############################################################################
   if(quantiR & !quantiP){
-    print("quantiR-qualiP")
+
+    #print("quantiR-qualiP")
     result=pdp::partial(rf$rf,
                         pred.var = predictor,
                         train=rf$datarf
                         )
     colnames(result)=c("x","y")
     p=ggplot2::ggplot(data=result,
-                      ggplot2::aes(x=x,y=y))+
+                      ggplot2::aes(x=x,y=y, col=x))+
       geom_point()
   } # end quantiR-quantiP
   p=p+
