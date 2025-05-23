@@ -24,4 +24,5 @@ Imports:
     magrittr,
     randomForest,
     stringr,
-    forcats
+    forcats,
+    tibble

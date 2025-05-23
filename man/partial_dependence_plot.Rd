@@ -22,10 +22,20 @@ Plots the partial dependence of a random forest model response to a predictor (b
 \examples{
 # example code
 data(icecream)
-lemon_rf=run_rf(icecream \%>\%
+choc_rf=run_rf(icecream \%>\%
           dplyr::select(-id) \%>\%
           dplyr::mutate_all(optimize_for_rf),
-          response="sorbet_citron")
-partial_dependence_plot(lemon_rf,predictor="age")
-partial_dependence_plot(lemon_rf,predictor="creme_glacee_vanille")
+          response="creme_glacee_chocolat")
+partial_dependence_plot(choc_rf,predictor="age")
+partial_dependence_plot(choc_rf,predictor="genre")
+genre_rf=run_rf(icecream \%>\%
+          dplyr::select(-id) \%>\%
+          dplyr::mutate_all(optimize_for_rf),
+          response="genre")
+partial_dependence_plot(genre_rf,predictor="creme_glacee_vanille", probabilities=TRUE)
+partial_dependence_plot(genre_rf,predictor="regular_eating", probabilities=TRUE)
+iris_sepal_length_rf=run_rf(iris, response="Sepal.Length")
+partial_dependence_plot(iris_sepal_length_rf,predictor="Species", probabilities=TRUE)
+iris_species_rf=run_rf(iris, response="Species")
+partial_dependence_plot(iris_species_rf,predictor="Petal.Width", probabilities=TRUE)
 }

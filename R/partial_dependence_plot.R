@@ -24,9 +24,7 @@
 #' partial_dependence_plot(iris_sepal_length_rf,predictor="Species", probabilities=TRUE)
 #' iris_species_rf=run_rf(iris, response="Species")
 #' partial_dependence_plot(iris_species_rf,predictor="Petal.Width", probabilities=TRUE)
-
-
-partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FALSE){
+partial_dependence_plot=function(rf,predictor,probabilities=FALSE){
   response=rf$rf$predicted
   quantiR=!is.factor(response)
   quantiP=!is.character(rf$datarf[[predictor]]) & !is.factor(rf$datarf[[predictor]])
@@ -110,8 +108,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
           result=do.call(randomForest::partialPlot,
                          list(x=rf$rf,
                               pred.data=rf$datarf,
-                              x.var=predictor,
-                              which.class=which.class))
+                              x.var=predictor))
           tib=tibble::tibble(x=result$x,y=result$y)
           p=biplot(tib,"x","y")
       }
