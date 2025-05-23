@@ -73,6 +73,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
         result=do.call(pdp::partial,
                        list(object=rf$rf,
                             pred.var=predictor,
+                            train=rf$datarf,
                             which.class=levels(response)[i]))
         colnames(result)=c("x","y")
         tib_i=tibble::tibble(level=rep(levels(response)[i],length(result$x)),
@@ -126,7 +127,7 @@ partial_dependence_plot=function(rf,predictor,which.class="Oui",probabilities=FA
     colnames(result)=c("x","y")
     p=ggplot2::ggplot(data=result,
                       ggplot2::aes(x=x,y=y, col=x))+
-      geom_point()
+      ggplot2::geom_point()
   } # end quantiR-quantiP
   p=p+
     ggplot2::xlab(predictor)+
